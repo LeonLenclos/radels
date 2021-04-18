@@ -37,6 +37,11 @@ ARÈNE : un joueur gagne la partie => DEMO
 
 autre possibilité : le jeu s'arrette quand le temps est écoullé chaque piece insérrée ajoute du temps.
 
+## Joysticks
+
+    jstest /dev/input/js0
+    jstest /dev/input/js1
+
 ## GPIO
 
 librairie pour les gpio : https://github.com/Tieske/rpi-gpio/blob/master/lua/README.md
