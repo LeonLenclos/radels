@@ -1,4 +1,4 @@
-DEBUG = false
+DEBUG = true
 
 --- color
 
@@ -14,7 +14,7 @@ HEIGHT = 9
 
 DISPLAY_WIDTH = TILE_SIZE*WIDTH
 DISPLAY_HEIGHT = TILE_SIZE*HEIGHT
-DISPLAY_PIXEL_RATIO = 3
+DISPLAY_PIXEL_RATIO = 4
 
 --- time and speed
 

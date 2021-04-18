@@ -35,7 +35,7 @@ function module.newDebugScreen(x, y, w, align, showKeys)
   end
 
   function debugScreen.draw()
-      love.graphics.printf(debugScreen.getText(), debugScreen.x, debugScreen.y, debugScreen.w , debugScreen.align)
+	 love.graphics.printf(debugScreen.getText(), debugScreen.x, debugScreen.y, debugScreen.w , debugScreen.align)
   end
 
   function debugScreen.print()

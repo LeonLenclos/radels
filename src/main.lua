@@ -20,8 +20,10 @@ function love.load()
 
     -- Fonts
     dogicaFont = love.graphics.newFont("font/dogicapixel.ttf", 8, 'mono')
+	debugFont = love.graphics.newFont("font/dogicapixel.ttf", 16, 'mono')
     numbersFont = love.graphics.newImageFont("font/numbers-font.png", "0123456789:")
     dogicaFont:setLineHeight(1.5)
+	debugFont:setLineHeight(1.5)
     love.graphics.setFont(dogicaFont)
 
     -- Game Variables
@@ -81,9 +83,11 @@ function love.draw()
 
     -- Debug Hight resolution
     if DEBUG then
-        love.graphics.setColor(1, 1, 1)
+	   love.graphics.setFont(debugFont)
+	   love.graphics.setColor(1, 0, 0)
         DSLeft.draw()
         DSRight.draw()
+        love.graphics.setColor(1, 1, 1)		
     end
 end
 
