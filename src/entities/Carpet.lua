@@ -1,6 +1,6 @@
 local Entity = require "Entity"
 local Carpet = Entity:extend()
-
+local audio = require 'audio'
 
 function Carpet:new(x, y)
     Carpet.super.new(self, x, y,
@@ -65,6 +65,7 @@ function Carpet:new(x, y)
             },
         }
     )
+		audio.playSound('carpet')
 end
 
 

@@ -13,16 +13,15 @@ function panels.load()
         player2 = love.graphics.newQuad(10*TILE_SIZE, 13*TILE_SIZE, TILE_SIZE, TILE_SIZE, tileset:getWidth(), tileset:getHeight()),
         player1 = love.graphics.newQuad(11*TILE_SIZE, 13*TILE_SIZE, TILE_SIZE, TILE_SIZE, tileset:getWidth(), tileset:getHeight()),
         panel = love.graphics.newQuad(12*TILE_SIZE, 13*TILE_SIZE, HEIGHT*TILE_SIZE, TILE_SIZE, tileset:getWidth(), tileset:getHeight()),
-        heartFull=love.graphics.newQuad(20*TILE_SIZE, 13*TILE_SIZE, TILE_SIZE/3, TILE_SIZE/3, tileset:getWidth(), tileset:getHeight()),
-        heartEmpty=love.graphics.newQuad(20*TILE_SIZE+20, 13*TILE_SIZE+10, TILE_SIZE/3, TILE_SIZE/3, tileset:getWidth(), tileset:getHeight()),
         specialActions={
+            love.graphics.newQuad(20*TILE_SIZE, 13*TILE_SIZE, TILE_SIZE, TILE_SIZE, tileset:getWidth(), tileset:getHeight()),
             love.graphics.newQuad(21*TILE_SIZE, 13*TILE_SIZE, TILE_SIZE, TILE_SIZE, tileset:getWidth(), tileset:getHeight()),
             love.graphics.newQuad(22*TILE_SIZE, 13*TILE_SIZE, TILE_SIZE, TILE_SIZE, tileset:getWidth(), tileset:getHeight()),
-            love.graphics.newQuad(23*TILE_SIZE, 13*TILE_SIZE, TILE_SIZE, TILE_SIZE, tileset:getWidth(), tileset:getHeight()),
         },
-        ready=love.graphics.newQuad(24*TILE_SIZE, 13*TILE_SIZE, TILE_SIZE, TILE_SIZE, tileset:getWidth(), tileset:getHeight()),
-        notReady=love.graphics.newQuad(25*TILE_SIZE, 13*TILE_SIZE, TILE_SIZE, TILE_SIZE, tileset:getWidth(), tileset:getHeight()),
-        pause=love.graphics.newQuad(26*TILE_SIZE, 13*TILE_SIZE, TILE_SIZE, TILE_SIZE, tileset:getWidth(), tileset:getHeight()),
+        ready=love.graphics.newQuad(23*TILE_SIZE, 13*TILE_SIZE, TILE_SIZE, TILE_SIZE, tileset:getWidth(), tileset:getHeight()),
+        win=love.graphics.newQuad(24*TILE_SIZE, 13*TILE_SIZE, TILE_SIZE, TILE_SIZE, tileset:getWidth(), tileset:getHeight()),
+        loose=love.graphics.newQuad(25*TILE_SIZE, 13*TILE_SIZE, TILE_SIZE, TILE_SIZE, tileset:getWidth(), tileset:getHeight()),
+		insertCoin=love.graphics.newQuad(26*TILE_SIZE, 13*TILE_SIZE, TILE_SIZE, TILE_SIZE, tileset:getWidth(), tileset:getHeight()),
     }
 
     panels.playerPanels = {
@@ -69,7 +68,6 @@ end
 
 
 function PlayerPanel:update(dt)
-
     -- Right Frame
     if self.player then
         if self.player.SpecialActionIndex then
@@ -79,14 +77,18 @@ function PlayerPanel:update(dt)
         end
     elseif isReady and isReady[self.playerId] then
         self.rightFrameQuad = quads.ready
+	elseif gameTime == 0 then
+	   self.rightFrameQuad = quads.insertCoin
+	elseif scores.lastWinner == 'both' or scores.lastWinner == self.playerId then
+	   self.rightFrameQuad = quads.win
+	elseif scores.lastWinner then
+	   self.rightFrameQuad = quads.loose
     else
         self.rightFrameQuad = nil
     end
-
 end
 
 function PlayerPanel:draw()
-
     local playerPanelCanvas = love.graphics.newCanvas(DISPLAY_HEIGHT, TILE_SIZE)
     love.graphics.setCanvas(playerPanelCanvas)
 
@@ -100,9 +102,13 @@ function PlayerPanel:draw()
         love.graphics.print(self.message, 31, 3)
         love.graphics.setColor(1,1,1)
     elseif self.player then
-        for i=1, PLAYER_LIFE do
-            love.graphics.draw(tileset, i<=self.player.life and quads.heartFull or quads.heartEmpty, 10*i+21, 0)
-        end
+	   local life = self.player.life/PLAYER_LIFE
+	   love.graphics.setColor(BLACK)
+	   love.graphics.rectangle('fill', 31, 3, 201*life, 7)
+	   love.graphics.setColor(1,1,1)
+--	   for i=1, PLAYER_LIFE do
+--            love.graphics.draw(tileset, i<=self.player.life and quads.heartFull or quads.heartEmpty, 10*i+21, 0)
+--        end
     end
     -- Right Frame
     if self.rightFrameQuad then

@@ -91,16 +91,17 @@ local title = {}
 effects.title = title
 
 title.currentTime=0
-title.quad = love.graphics.newQuad(0, 14*TILE_SIZE, 8*TILE_SIZE, 5*TILE_SIZE, tileset:getWidth(), tileset:getHeight())
+title.quad = love.graphics.newQuad(0, 14*TILE_SIZE, 8*TILE_SIZE, 3*TILE_SIZE, tileset:getWidth(), tileset:getHeight())
 
 title.update = function(dt)
     title.currentTime = title.currentTime + dt
 end
 
 title.draw = function()
-    love.graphics.draw(tileset, title.quad, 4*TILE_SIZE, 2*TILE_SIZE)
+   local wave = (math.sin(title.currentTime)+1) / 2
+   love.graphics.draw(tileset, title.quad, 6*TILE_SIZE, TILE_SIZE/2 + math.floor(wave*14), math.pi/2)
+   love.graphics.draw(tileset, title.quad, DISPLAY_WIDTH-6*TILE_SIZE, DISPLAY_HEIGHT -TILE_SIZE/2 - math.floor(wave*14), math.pi*3/2)
 end
-
 
 
 return effects

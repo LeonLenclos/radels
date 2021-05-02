@@ -6,7 +6,7 @@ local output = require 'output'
 local input = require 'input'
 local scenes = require 'scenes'
 local scores = require 'scores'
-
+local audio = require 'audio'
 
 
 function love.load()
@@ -26,13 +26,17 @@ function love.load()
 	debugFont:setLineHeight(1.5)
     love.graphics.setFont(dogicaFont)
 
+	-- audio
+	audio.load()
+	love.audio.setVolume(0.9)
+	
     -- Game Variables
     gameTime = 0
 
     -- Game elements
     panels.load()
     scenes.load(scenes.pause)
-
+	
     --Debug
     DSLeft = DebugScreen.newDebugScreen(2,2,(DISPLAY_WIDTH*DISPLAY_PIXEL_RATIO)-4, 'left', true)
     DSRight = DebugScreen.newDebugScreen(2,2,(DISPLAY_WIDTH*DISPLAY_PIXEL_RATIO)-4, 'right', false)
@@ -42,12 +46,12 @@ end
 
 function love.update(dt)
 
-    input.update(dt)
+   input.update(dt)
     
-    gameTime = gameTime-dt > 0 and gameTime-dt or 0
     if input.insert_coin and not coinJustInserted then
         if gameTime <= 0 then scores.reset() end
         gameTime = gameTime + COIN_VALUE
+		audio.playSound('coin')
         coinJustInserted = true
     elseif not input.insert_coin and coinJustInserted then
         coinJustInserted = false

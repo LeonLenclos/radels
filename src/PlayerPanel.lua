@@ -31,8 +31,6 @@ local quads = {
 function PlayerPanel:new(playerId)
     self.playerId = playerId
 end
-
-
 function PlayerPanel:setPlayer(player)
     self.player = player
 end

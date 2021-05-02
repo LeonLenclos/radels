@@ -1,5 +1,6 @@
 local Entity = require "Entity"
 local Wall = Entity:extend()
+local audio = require 'audio'
 
 function Wall:new(x, y)
     Wall.super.new(self, x, y,
@@ -47,6 +48,7 @@ function Wall:new(x, y)
         }
     )
     self.life = WALL_LIFE
+	audio.playSound('wall')
 end
 
 

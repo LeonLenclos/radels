@@ -67,13 +67,16 @@ function World:update(dt)
 end
 
 function World:draw()
+
+   
   for obj in self:iter(function(o) return o:getProperty('isGround') end) do
     obj:draw()
   end
   for obj in self:iter(function(o) return not o:getProperty('isGround') end) do
     obj:draw()
-
   end
+  if self:getById('player1') then self:getById('player1'):draw() end
+  if self:getById('player2') then self:getById('player2'):draw() end
 end
 
 function World:add(gameObject)

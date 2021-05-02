@@ -120,6 +120,12 @@ function utils.shuffle(t)
     -- end
 end
 
+function utils.choice(t)
+   math.randomseed(os.time())
+   local i = math.random(1,#t)
+   return t[i]
+end
+
 function utils.clone(t)
   return {unpack(t)}
 end

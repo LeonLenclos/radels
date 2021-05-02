@@ -1,5 +1,6 @@
 local Entity = require "Entity"
 local Bomb = Entity:extend()
+local audio = require "audio"
 
 function Bomb:new(x, y, directionX)
     Bomb.super.new(self, x+directionX, y,
@@ -14,6 +15,14 @@ function Bomb:new(x, y, directionX)
             impact={
                 rowOrigin=4,
                 colOrigin=5,
+                colAnimated = true,
+                animDuration=1/8,
+                animLength=1,
+                next='iddle'
+            },
+            shooted={
+                rowOrigin=4,
+                colOrigin=13,
                 colAnimated = true,
                 animDuration=1/8,
                 animLength=1,
@@ -50,6 +59,7 @@ function Bomb:new(x, y, directionX)
     self.countDown = BOMB_COUNT_DOWN
     self.reach = BOMB_REACH
     self.moveRecovery = 0
+	audio.playSound('bomb')
 end
 
 function Bomb:update(dt)
@@ -81,7 +91,8 @@ function Bomb:move()
 end
 
 function Bomb:explode(dt)
-    self.life = 0
+   audio.playSound('bomb-explosion')
+   self.life = 0
     for x=-1,1 do
         for y=-1,1 do
             if x==0 or y==0 then

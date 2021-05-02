@@ -1,8 +1,30 @@
+# Radèls
+
+![radels](title.png)
+
+Radèls est une borne d'arcade cocktail<sup>1</sup> dédiée<sup>2</sup>. Actuellement en cours de construction par Léon et Fabien.
+
+Ce dépôt contient le code source du jeu et les informations concernant la construction de la borne.
+
+<small>
+1\. Sous la forme d'une table avec l'écran à l'horizontale et les deux joueurs face-à-face.  
+2\. Qui ne se joue qu'avec un seul jeu.
+</small>
+
+![radels](borne.png)
+
+
+
+
+
+
 ## Installation
 
 L'idée est d'installer retropie sur le raspberry et de faire demarrer le jeu directement avant emulationstation
 
-### Configurer RetroPie : 
+### Configurer le raspberrypi
+
+#### Installer et configurer RetroPie : 
 
 (plus d'infos sur https://retropie.org.uk/docs/First-Installation/#installation)
 
@@ -15,41 +37,63 @@ L'idée est d'installer retropie sur le raspberry et de faire demarrer le jeu di
 7. Installer love (menu RetroPie > RetroPie Setup > Manage Packages > opt)
 8. Transferer le jeu via clé USB (cf. documentation de retropie)
 
-### Démarrer directement sur le jeu
+### Configurer RetroPie pour démarrer directement sur le jeu
 
 éditer `/opt/retropie/configs/all/autostart.sh` pour ajouter une ligne en tête :
 
-    /opt/retropie/supplementary/runcommand/runcommand.sh 0 _SYS_ love ~/RetroPie/roms/love/game.love
+    /opt/retropie/supplementary/runcommand/runcommand.sh 0 _SYS_ love ~/RetroPie/roms/love/radels.love
 
 ### Autre réglages
 
 Il y a une bordure noire autour du jeu, il faut desactiver l'overscan (RetroPie > raspi-config) 
 
+### Créer un .love à jour à partir de ce dépôt
 
-## Scénario
+Récupérer la version la plus récente du jeu
 
-Allumage de la console => DEMO
-DEMO : input.insert_coin => SALLE D'ENTRAINNEMENT
-SALLE D'ENTRAINNEMENT : tout le monde est prêt => ARÈNE
-ARÈNE : un joueur gagne la manche => SALLE D'ENTRAINNEMENT
-ARÈNE : un joueur gagne la partie => DEMO
+    # Cloner le dépôt
+	$ git clone https://github.com/LeonLenclos/radels.git
+	
+	# Créér le fichier .love
+	$ cd radels/src
+	$ rm ../radels.love
+	$ zip -r ../radels.love *
 
 
-autre possibilité : le jeu s'arrette quand le temps est écoullé chaque piece insérrée ajoute du temps.
+### Mettre le jeu sur la borne
 
-## Joysticks
+D'abord créer une clé RetroPie :
+
+1. Brancher une clé usb au rpi de la borne
+2. Attendre un peu
+
+Ensuite mettre [`radels.love`](radels.love) sur la clé, dans `/retropie/love/`. Enfin transferez le jeu :
+
+1. Brancher la clé usb au rpi de la borne
+2. Attendre un peu
+3. Rebooter
+
+
+## Règles
+
+Se déplacer : Joystick
+Tirer : A
+Utiliser / Méditer : B
+
+## Notes diverses
+
+### Joysticks
 
     jstest /dev/input/js0
     jstest /dev/input/js1
 
-## GPIO
+### GPIO
 
 librairie pour les gpio : https://github.com/Tieske/rpi-gpio/blob/master/lua/README.md
 
-## Sorties du jeu
+### Sorties du jeu
     
 La sortie principale est un écran lcd où s'affiche le jeu. La borne possède aussi des leds pour transmettre des informations importantes au joueur et des enceintes pour la musique et les bruitages.
-
 
 ### Boutons
 
@@ -113,7 +157,3 @@ La sortie principale est un écran lcd où s'affiche le jeu. La borne possède a
 
 * input.insert_coin
 
-
-## Todo
-
-* Konami Code ?
