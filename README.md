@@ -74,9 +74,9 @@ Ensuite mettre [`radels.love`](radels.love) sur la clé, dans `/retropie/love/`.
 
 ## Règles
 
-Se déplacer : Joystick
-Tirer : A
-Utiliser / Méditer : B
+* Se déplacer : Joystick
+* Tirer : A
+* Utiliser / Méditer : B
 
 ## Notes diverses
 
