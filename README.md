@@ -9,7 +9,7 @@ Ce dépôt contient le code source du jeu et les informations concernant la cons
 <sup>1. Sous la forme d'une table avec l'écran à l'horizontale et les deux joueurs face-à-face.</sup><br/>
 <sup>2. Qui ne se joue qu'avec un seul jeu.</sup>
 
-![radels](borne.png)
+<!--![radels](borne.png)-->
 
 
 
