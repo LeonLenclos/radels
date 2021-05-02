@@ -6,10 +6,8 @@ Radèls est une borne d'arcade cocktail<sup>1</sup> dédiée<sup>2</sup>. Actuel
 
 Ce dépôt contient le code source du jeu et les informations concernant la construction de la borne.
 
-<small>
-1- Sous la forme d'une table avec l'écran à l'horizontale et les deux joueurs face-à-face.<br/>
-2- Qui ne se joue qu'avec un seul jeu.
-</small>
+<sup>1. Sous la forme d'une table avec l'écran à l'horizontale et les deux joueurs face-à-face.</sup><br/>
+<sup>2. Qui ne se joue qu'avec un seul jeu.</sup>
 
 ![radels](borne.png)
 
