@@ -3,6 +3,36 @@ local effects = {}
 local utils = require "utils"
 local tileset = love.graphics.newImage('tileset.png')
 
+-- CameraShake
+
+local cameraShake = {}
+effects.cameraShake = cameraShake
+
+
+cameraShake.start = function()
+   cameraShake.currentTime=0
+end
+
+cameraShake.isOver = function()
+    return not cameraShake.currentTime or cameraShake.currentTime > TRANSITION_TIME
+end
+
+cameraShake.update = function(dt)
+    if cameraShake.isOver() then
+	   cameraShake.offset = {0, 0}
+    else
+	   local x = math.floor(cameraShake.currentTime*10%2)-1
+	   local y = math.floor((1.5+cameraShake.currentTime)*10%2)-1
+	   cameraShake.offset = {x, y}
+	   cameraShake.currentTime=cameraShake.currentTime+dt
+	end
+end
+
+cameraShake.getOffset = function(dt)
+   return cameraShake.offset and cameraShake.offset or {0,0}
+end
+
+
 -- Transition
 
 local transition = {}

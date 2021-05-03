@@ -1,6 +1,7 @@
 local Entity = require "Entity"
 local Bomb = Entity:extend()
 local audio = require "audio"
+local effects = require "effects"
 
 function Bomb:new(x, y, directionX)
     Bomb.super.new(self, x+directionX, y,
@@ -92,6 +93,7 @@ end
 
 function Bomb:explode(dt)
    audio.playSound('bomb-explosion')
+   effects.cameraShake.start()
    self.life = 0
     for x=-1,1 do
         for y=-1,1 do
