@@ -128,6 +128,7 @@ function scenes.arena.update(dt)
    input.doPlayersInputs(player1, player2)
 
    -- Logic
+   effects.target.update(dt)
    world:update(dt)
    output.update(dt)
    effects.cameraShake.update(dt)
@@ -158,6 +159,7 @@ function scenes.arena.draw()
    love.graphics.push()
    love.graphics.translate(unpack(effects.cameraShake.getOffset()))
    world:draw()
+   effects.target.draw()
    love.graphics.pop()
 end
 

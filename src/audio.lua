@@ -15,7 +15,9 @@ function audio.load()
    audio.loadSound('meditation1')
    audio.loadSound('meditation2')
    audio.loadSound('meditation3')
-
+   audio.loadSound('drown')
+   audio.loadSound('death')
+   
    audio.musics = {}
    audio.loadMusic('arena')
    audio.musics['arena']:setVolume(0.7)

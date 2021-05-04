@@ -3,6 +3,82 @@ local effects = {}
 local utils = require "utils"
 local tileset = love.graphics.newImage('tileset.png')
 
+
+-- Target
+
+local target = {}
+effects.target = target
+
+target.currentTime=0
+target.targets = {}
+target.show = function(playerId, specialAction, x, y, tx, ty)
+   target.targets[playerId] = {
+	  playerId=playerId,
+	  specialAction=specialAction,
+	  x=x,
+	  y=y,
+	  tx=tx,
+	  ty=ty
+   }
+end
+
+
+target.update = function(dt)    
+   target.currentTime=target.currentTime+dt
+   target.targets = {}
+end
+
+target.quads = {}
+target.quads.carpet= {}
+for i=1,4 do
+   target.quads.carpet[i] = love.graphics.newQuad(14*TILE_SIZE  + (i-1)*(3*TILE_SIZE), 7*TILE_SIZE,
+											  TILE_SIZE*3, TILE_SIZE*3, tileset:getWidth(), tileset:getHeight())
+end
+target.quads.wall = {}
+for i=1,4 do
+   target.quads.wall[i] = love.graphics.newQuad(14*TILE_SIZE  + (i-1)*(TILE_SIZE), 10*TILE_SIZE,
+											  TILE_SIZE, TILE_SIZE, tileset:getWidth(), tileset:getHeight())
+end
+target.quads.bomb = {line={}, endOfLine={}}
+for i=1,5 do
+   target.quads.bomb.line[i] = love.graphics.newQuad(18*TILE_SIZE  + (i-1)*(2*TILE_SIZE), 10*TILE_SIZE,
+											  TILE_SIZE, TILE_SIZE, tileset:getWidth(), tileset:getHeight())
+   target.quads.bomb.endOfLine[i] = love.graphics.newQuad(19*TILE_SIZE  + (i-1)*(2*TILE_SIZE), 10*TILE_SIZE,
+											  TILE_SIZE, TILE_SIZE, tileset:getWidth(), tileset:getHeight())
+end
+
+target.draw = function()
+   for playerId, targetInfos in pairs(target.targets) do
+	  if targetInfos then
+		 
+		 if targetInfos.specialAction == 1 then -- Carpet
+			local frame = math.floor(target.currentTime*8%4+1)
+			love.graphics.draw(tileset, target.quads.carpet[frame], (targetInfos.tx-1)*TILE_SIZE, (targetInfos.ty-1)*TILE_SIZE)
+		 elseif targetInfos.specialAction == 2 and targetInfos.tx then -- Wall
+			local frame = math.floor(target.currentTime*8%4+1)
+			love.graphics.draw(tileset, target.quads.wall[frame], targetInfos.tx*TILE_SIZE, targetInfos.ty*TILE_SIZE)
+		 elseif targetInfos.specialAction == 3 then -- Bomb
+			if targetInfos.tx > targetInfos.x then
+			   local frame = math.floor(target.currentTime*8%5+1)
+			   for x=targetInfos.x+1, targetInfos.tx-1 do
+				  love.graphics.draw(tileset, target.quads.bomb.line[frame], x*TILE_SIZE, targetInfos.ty*TILE_SIZE)
+			   end
+			   love.graphics.draw(tileset, target.quads.bomb.endOfLine[frame], targetInfos.tx*TILE_SIZE, targetInfos.ty*TILE_SIZE)
+			else
+			   local frame = math.floor(target.currentTime*8%5+1)
+			   for x=targetInfos.tx+1, targetInfos.x-1 do
+				  love.graphics.draw(tileset, target.quads.bomb.line[frame], (x+1)*TILE_SIZE, (targetInfos.y+1)*TILE_SIZE, math.pi)
+			   end
+			   love.graphics.draw(tileset, target.quads.bomb.endOfLine[frame], (targetInfos.tx+1)*TILE_SIZE, (targetInfos.ty+1)*TILE_SIZE, math.pi)
+			end
+			
+		end
+	  end
+    end
+end
+
+
+
 -- CameraShake
 
 local cameraShake = {}

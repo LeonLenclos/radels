@@ -8,6 +8,8 @@ local Bomb = require 'entities.Bomb'
 local Carpet = require 'entities.Carpet'
 local scores = require 'scores'
 local audio = require 'audio' 
+local effects = require 'effects'
+
 local tileset = love.graphics.newImage('tileset.png')
 
 function Player:new(x, y, id)
@@ -17,7 +19,7 @@ function Player:new(x, y, id)
    }
    Player.super.new(self, x, y,
 					{
-					   type='player',
+					   class='player',
 					   isSolid=true,
 					},
 					{
@@ -145,7 +147,29 @@ function Player:update(dt)
 	  local distanceToOpponent = world:getById(self.id == 'player1' and 'player2' or 'player1').x - self.x
 	  self.directionX = distanceToOpponent>0 and 1 or distanceToOpponent<0 and -1 or self.directionX
    end
+
+   -- Target
+   if self.specialActionCharged then
+	  local targetX = self.x
+	  local targetY = self.y
+	  if self.SpecialActionIndex == 3 then --bomb
+		 targetX = targetX + self.directionX
+		 local reach = BOMB_REACH
+		 while not world:isSolidAt(targetX + self.directionX, targetY) and reach > 0 do
+			reach = reach - 1
+			targetX = targetX+self.directionX
+		 end
+	  elseif self.SpecialActionIndex == 2 then --Box
+		 targetX = targetX + self.directionX
+		 if world:isSolidAt(targetX, targetY) then
+			targetX = nil
+			targetY = nil
+		 end
+	  end
+	  effects.target.show(self.id, self.SpecialActionIndex, self.x, self.y, targetX, targetY)
+   end
    
+
    
    if self.actionCharging then
 	  -- Action Press

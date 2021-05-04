@@ -72,10 +72,10 @@ function PlayerPanel:update(dt)
     if self.player then
         if self.player.SpecialActionIndex then
             self.rightFrameQuad = quads.specialActions[self.player.SpecialActionIndex]
-        else
+		else
             self.rightFrameQuad = nil
         end
-    elseif isReady and isReady[self.playerId] then
+	    elseif isReady and isReady[self.playerId] then
         self.rightFrameQuad = quads.ready
 	elseif gameTime == 0 then
 	   self.rightFrameQuad = quads.insertCoin
@@ -113,7 +113,12 @@ function PlayerPanel:draw()
     -- Right Frame
     if self.rightFrameQuad then
         love.graphics.draw(tileset, self.rightFrameQuad, 8*TILE_SIZE,0)
-    end
+    elseif self.player and  self.player.actionCharge > 0 then
+		   local charge = self.player.actionCharge/MEDITATION_DURATION
+		   love.graphics.setColor(BLACK)
+		   love.graphics.rectangle('fill', 239, 3, math.floor(27*charge), 23)
+		   love.graphics.setColor(1,1,1)
+	end
 
     -- Numbers
     love.graphics.setFont(numbersFont)

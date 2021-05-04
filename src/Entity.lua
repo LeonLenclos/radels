@@ -1,6 +1,7 @@
 local Object = require "lib.classic"
 local Entity = Object:extend()
 local utils = require "utils"
+local audio = require "audio"
 
 -- Poperties :
 --
@@ -70,7 +71,9 @@ function Entity:new(x, y, properties, spriteStates)
 end
 
 function Entity:getProperty(key)
-    return self.properties[key]
+   if self.properties then
+	 return self.properties[key]
+   end  
 end
 
 function Entity:setProperty(key, value)
@@ -93,6 +96,7 @@ end
 function Entity:drown()
     if self.life>0 then
         self.life = 0
+		audio.playSound('drown')
         if self.spriteStates.drowning then
             self:setSpriteState('drowning')
         end
@@ -100,8 +104,15 @@ function Entity:drown()
 end
 
 function Entity:update(dt)
-    if self.life <= 0 and self.spriteState ~= 'none' and self.spriteState ~= 'drowning' then
-        self:setSpriteState('death')
+
+   if self.life<=0 and (self.id == 'player1' or self.id == 'player2') and not self.deathSoundPlaying then
+	  audio.playSound('death')
+	  self.deathSoundPlaying = true
+   end
+
+   
+   if self.life <= 0 and self.spriteState ~= 'none' and self.spriteState ~= 'drowning' then
+	   self:setSpriteState('death')
     end
 
     local spriteState = self:getSpriteState()
