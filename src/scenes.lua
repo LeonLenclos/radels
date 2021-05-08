@@ -1,14 +1,19 @@
+--------------------------------------------------------
+-- Scenes -- There is two scenes, 'pause' and 'arena' --
+--------------------------------------------------------
 local scenes = {}
 
 local scores = require 'scores'
 local World = require 'World'
 local Player = require 'entities.Player'
-
 local effects = require 'effects'
 local panels = require 'panels'
 local output = require 'output'
 local input = require 'input'
 local audio = require 'audio'
+
+--------------------------------------------------
+-- Scenes
 
 function scenes.load(scene)
    -- Transition
@@ -23,7 +28,6 @@ end
 
 
 function scenes.update(dt)
-
    -- Transition
    if not scenes.current or (effects.transition.isOver() and nextScene) then
 	  scenes.current = nextScene
@@ -45,7 +49,8 @@ function scenes.draw()
    effects.transition.draw()
 end
 
------------------------- PAUSE
+--------------------------------------------------
+-- Pause scene
 
 scenes.pause = {}
 
@@ -61,21 +66,22 @@ function scenes.pause.load()
 end
 
 function scenes.pause.update(dt)
+
+   -- Auto play if players takes too long time to get ready
    if gameTime > 0 then
 	  pauseTime = pauseTime + dt
    end
-   
   if pauseTime > MAX_PAUSE_TIME then
 	  scenes.load(scenes.arena)
    end
    
    -- Input
    if gameTime > 0 then
-	  if input.p1_shoot and input.p1_action then
+	  if input.p1_shoot or input.p1_action then
 		 isReady.player1 = true
 	  end
 
-	  if input.p2_shoot and input.p2_action then
+	  if input.p2_shoot or input.p2_action then
 		 isReady.player2 = true
 	  end
 
@@ -83,18 +89,20 @@ function scenes.pause.update(dt)
 		 scenes.load(scenes.arena)
 	  end
    end
+   
    -- PlayerPanels
    for id, panel in panels.iter() do
 	  if gameTime <= 0 then
-		 panel:setMessage('INSEREZ UNE PIECE DE MONNAIE !')
+		 panel:setMessage('INSERE UNE PIECE DE MONNAIE !')
 	  elseif pauseTime > MAX_PAUSE_TIME - 3 then
 		 panel:setMessage('ATTENTION ÇA VA COMMENCER...')
 	  elseif not isReady[id] then
-		 panel:setMessage('PRESSEZ A + B POUR COMMENCER...')
+		 panel:setMessage('PRESSE UN BOUTON...')
 	  else
-		 panel:setMessage("L'AUTRE AUSSI DOIT PRESSER A + B")
+		 panel:setMessage("L'AUTRE DOIT AUSSI APPUYER.")
 	  end
    end
+   
    -- Title
    effects.title.update(dt)
 end
@@ -105,7 +113,8 @@ function scenes.pause.draw()
 end
 
 
------------------------- ARENA
+--------------------------------------------------
+-- Arena scene
 
 scenes.arena = {}
 
@@ -162,77 +171,5 @@ function scenes.arena.draw()
    effects.target.draw()
    love.graphics.pop()
 end
-
-
------------------------- DEMO
-
--- scenes.demo = {}
-
--- function scenes.demo.load()
---     world = World('')
--- end
-
--- function scenes.demo.update(dt)
---     -- Input
---     if input.insert_coin then
---         scenes.load(scenes.playground)
---     end
--- end
-
--- function scenes.demo.draw()
---     world:draw()
--- end
-
-
-
------------------------- PLAYGROUND
-
--- scenes.playground = {}
-
--- function scenes.playground.load()
---     world = World(PLAYGROUND_MAP)
---     player1 = world:getById('player1')
---     player2 = world:getById('player2')
---     playerPanels.player1:setPlayer(player1)
---     playerPanels.player1:setPlayer(player2)
--- end
-
--- function scenes.playground.update(dt)
---     -- Input
---     input.doPlayersInputs(player1, player2)
-
---     -- Logic
---     world:update(dt)
---     output.update(dt)
-
---     -- Output
---     output.doPlayerOutput(player1, player2)
-
---     -- End
---     if world:isReadyAreaAt(player1.x, player1.y)
---     and world:isReadyAreaAt(player2.x, player2.y) then
---         scenes.load(scenes.arena)
---     end
-
-
---     if player1.life == 0 then
---         x, y = world:getRandomSpawnablePos()
---         player1 = Player(x, y, 'player1')
---         world:add(player1)
---     end
---     if player2.life == 0 then
---         x, y = world:getRandomSpawnablePos()
---         player2 = Player(x, y, 'player2')
---         world:add(player2)
---     end
--- end
-
--- function scenes.playground.draw()
---     world:draw()
--- end
-
-
---------------
-
 
 return scenes

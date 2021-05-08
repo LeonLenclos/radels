@@ -1,7 +1,20 @@
+-------------------------------------
+-- Audio -- play sounds and musics --
+-------------------------------------
+
 local audio = {}
+
 local utils = require "utils"
 
+-- Load sounds and musics
 function audio.load()
+   -- Paths
+   audio.paths = {
+	  sounds = 'audio/sounds/%s.wav',
+	  musics = 'audio/musics/%s.wav'
+   }
+   
+   -- Load sounds
    audio.sounds = {}
    audio.loadSound('carpet')
    audio.loadSound('wall')
@@ -17,7 +30,8 @@ function audio.load()
    audio.loadSound('meditation3')
    audio.loadSound('drown')
    audio.loadSound('death')
-   
+
+   -- Load musics and set volumes
    audio.musics = {}
    audio.loadMusic('arena')
    audio.musics['arena']:setVolume(0.7)
@@ -25,49 +39,67 @@ function audio.load()
    audio.musics['pause']:setVolume(0.6)
 end
 
+-- Load a sound giving a name and the amount of variants (default is no variant)
 function audio.loadSound(name, variants)
+   -- The sound is loaded in the audio.sounds table
    audio.sounds[name] = {}
    if variants then
+	   -- sources are stored as a table in .sources if multiple variants
 	  audio.sounds[name].sources = {}
 	  for i=1,variants do
-		 local source = love.audio.newSource('audio/sounds/'..name..tostring(i)..'.wav', 'static')
+		 local variantName = name..tostring(i)
+		 local source = love.audio.newSource(string.format(audio.paths.sounds, variantName), 'static')
 		 audio.sounds[name].sources[i] = source
 	  end
-   else	 
-	  audio.sounds[name].source = love.audio.newSource('audio/sounds/'..name..'.wav', 'static')
+   else
+	  -- source is stored in .source if no variant
+	  audio.sounds[name].source = love.audio.newSource(string.format(audio.paths.sounds, name), 'static')
    end
 end
 
-
+-- Load a music giving a name
 function audio.loadMusic(name)
-   audio.musics[name] = love.audio.newSource('audio/musics/'..name..'.wav', 'stream')
-
+   -- The music is loaded in the audio.musics table
+   audio.musics[name] = love.audio.newSource(string.format(audio.paths.musics, name), 'stream')
 end
 
+-- Set the current music to be played in loop giving a name
 function audio.playMusic(name)
+   -- Stop all the musics
    for _, source in pairs(audio.musics) do
-	  print(source)
 	  source:stop()
    end
+   -- Play the current music in loop
    audio.musics[name]:setLooping(true)
    audio.musics[name]:play()
 end
 
-function audio.playSound(name)
+-- Play a sound giving a name and an x position
+function audio.playSound(name, x)
+   -- Get the source 
    local source
    if audio.sounds[name].source then
 	  source = audio.sounds[name].source
    elseif audio.sounds[name].sources then
+	  -- Get a random source if multiple variants
 	  source = utils.choice(audio.sounds[name].sources)
    end
 
-
+   -- Clone the source if it is already playing
    if source:isPlaying() then
 	  source = source:clone()
    end
+
+   -- Set source position if specified
+   if x then
+	  x = x * -1
+	  source:setPosition(x,0,0)
+   end
+
+   -- Play the source
    love.audio.play(source)
+
    return source
 end
-
 
 return audio

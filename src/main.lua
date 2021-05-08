@@ -1,4 +1,9 @@
+------------------------------------------
+-- Main -- The main script for the game --
+------------------------------------------
+
 require 'constants'
+
 local DebugScreen = require 'lib.DebugScreen'
 local panels = require 'panels'
 local utils = require 'utils'
@@ -10,7 +15,6 @@ local audio = require 'audio'
 
 
 function love.load()
-
     -- Graphics settings
     love.window.setMode(DISPLAY_WIDTH*DISPLAY_PIXEL_RATIO, DISPLAY_HEIGHT*DISPLAY_PIXEL_RATIO)
     love.graphics.setDefaultFilter('nearest')
@@ -45,11 +49,11 @@ end
 
 
 function love.update(dt)
-
+   -- Input
    input.update(dt)
-    
     if input.insert_coin and not coinJustInserted then
-        if gameTime <= 0 then scores.reset() end
+	   -- insert coin
+	   if gameTime <= 0 then scores.reset() end
         gameTime = gameTime + COIN_VALUE
 		audio.playSound('coin')
         coinJustInserted = true
@@ -57,6 +61,7 @@ function love.update(dt)
         coinJustInserted = false
     end
 
+	-- Logic
     panels.update(dt)
     scenes.update(dt)
     output.update(dt)
@@ -65,6 +70,7 @@ function love.update(dt)
     if DEBUG then
         DSRight.set('leds', output.debugString())
         DSRight.set('input', input.debugString())
+		DSRight.set('gpio', input.gpioLog)
         DSRight.set('fps', utils.round(1/dt,2))
         DSLeft.set('scores', scores.player1 .. '/' .. scores.player2)
         DSLeft.set('remaining time')

@@ -175,13 +175,13 @@ function Player:update(dt)
 	  -- Action Press
 	  self:setSpriteState('actionCharging')
 	  if self.actionCharge == 0 and not self.specialActionCharged then
-		 self.meditationSound = audio.playSound('meditation-charging')
+		 self.meditationSound = audio.playSound('meditation-charging', self.controlsDirectionX)
 	  end
 	  self.actionCharge = self.actionCharge + dt
 	  if not self.specialActionCharged and self.actionCharge > MEDITATION_DURATION then
 		 local newIndex = 1 + math.floor(self.actionCharge*MEDITATION_SPEED%#self.specialActions)
 		 if newIndex ~= self.SpecialActionIndex then
-			audio.playSound('meditation' .. newIndex)
+			audio.playSound('meditation' .. newIndex, self.controlsDirectionX)
 		 end
 		 self.SpecialActionIndex = newIndex
 	  elseif self.specialActionCharged then

@@ -1,3 +1,7 @@
+---------------------------------------------
+-- Scores -- this module just store scores --
+---------------------------------------------
+
 local scores = {}
 
 scores.reset = function()

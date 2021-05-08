@@ -1,3 +1,7 @@
+----------------------------------------
+-- Ouput -- GPIO output for leds etc. --
+----------------------------------------
+
 local output = {}
 
 function output.update()
