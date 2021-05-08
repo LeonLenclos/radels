@@ -30,6 +30,7 @@ function audio.load()
    audio.loadSound('meditation3')
    audio.loadSound('drown')
    audio.loadSound('death')
+   audio.loadSound('step', 11) 
 
    -- Load musics and set volumes
    audio.musics = {}

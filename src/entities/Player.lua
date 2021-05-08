@@ -209,6 +209,7 @@ end
 
 function Player:moveTo(x, y)
    if(self.moveRecovery >= 1/PLAYER_SPEED and not world:isSolidAt(x, y)) and self.actionCharge == 0 then
+	  audio.playSound('step')
 	  self.x = x
 	  self.y = y
 	  self.moveRecovery = 0
