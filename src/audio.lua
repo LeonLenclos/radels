@@ -64,12 +64,17 @@ function audio.loadMusic(name)
    audio.musics[name] = love.audio.newSource(string.format(audio.paths.musics, name), 'stream')
 end
 
--- Set the current music to be played in loop giving a name
-function audio.playMusic(name)
-   -- Stop all the musics
+-- Stop all the musics
+function audio.stopMusic()
    for _, source in pairs(audio.musics) do
 	  source:stop()
    end
+end
+
+
+-- Set the current music to be played in loop giving a name
+function audio.playMusic(name)
+   audio.stopMusic()
    -- Play the current music in loop
    audio.musics[name]:setLooping(true)
    audio.musics[name]:play()

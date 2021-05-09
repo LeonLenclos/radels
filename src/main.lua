@@ -32,7 +32,7 @@ function love.load()
 
 	-- audio
 	audio.load()
-	love.audio.setVolume(0.9)
+	love.audio.setVolume(MASTER_VOLUME)
 	
     -- Game Variables
     gameTime = 0

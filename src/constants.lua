@@ -6,6 +6,10 @@
 
 DEBUG = false
 
+-- Sounds
+
+MASTER_VOLUME = 0.5 -- /1
+
 -- Colors
 
 BLACK = {43/255, 32/255, 90/255}

@@ -62,7 +62,12 @@ function scenes.pause.load()
 	  player2 = false,
    }
    pauseTime = 0
-   audio.playMusic('pause')
+   if gameTime > 0 then
+	  audio.playMusic('pause')
+   else
+	  audio.stopMusic()
+   end
+   
 end
 
 function scenes.pause.update(dt)
@@ -70,6 +75,9 @@ function scenes.pause.update(dt)
    -- Auto play if players takes too long time to get ready
    if gameTime > 0 then
 	  pauseTime = pauseTime + dt
+	  if not audio.musics['pause']:isPlaying() then
+		 audio.playMusic('pause')
+	  end
    end
   if pauseTime > MAX_PAUSE_TIME then
 	  scenes.load(scenes.arena)
