@@ -89,8 +89,6 @@ function PlayerPanel:update(dt)
         end
 	    elseif isReady and isReady[self.playerId] then
         self.rightFrameQuad = quads.ready
-	elseif gameTime == 0 then
-	   self.rightFrameQuad = quads.insertCoin -- Insert coin logo
 	elseif scores.lastWinner == 'both' or scores.lastWinner == self.playerId then
 	   self.rightFrameQuad = quads.win -- Win logo
 	elseif scores.lastWinner then
@@ -113,15 +111,19 @@ function PlayerPanel:draw()
     -- Top bar
     if self.message then
 	   -- Show message
+
+
+
         love.graphics.setFont(dogicaFont)
+        local textWidth  = dogicaFont:getWidth(self.message)
         love.graphics.setColor(BLACK)
-        love.graphics.print(self.message, 31, 3)
+        love.graphics.print(self.message, 132-textWidth/2, 11)
         love.graphics.setColor(1,1,1)
     elseif self.player then
 	   -- Show life bar
 	   local life = self.player.life/PLAYER_LIFE
 	   love.graphics.setColor(BLACK)
-	   love.graphics.rectangle('fill', 31, 3, 201*life, 7)
+	   love.graphics.rectangle('fill', 31+201*life, 3, 201*(1-life), 23)
 	   love.graphics.setColor(1,1,1)
     end
 
@@ -138,17 +140,17 @@ function PlayerPanel:draw()
 	end
 
     -- Numbers
-    love.graphics.setFont(numbersFont)
-    if gameTime > 0 or (love.timer.getTime()%1>1/2) then
-        love.graphics.print(string.format("%.2d:%.2d", gameTime/60%60, gameTime%60), 56,18)
-    end
-    love.graphics.print(string.format("%03d",scores[self.playerId]), 134,18)
-    love.graphics.print(string.format("%03d",scores[self.playerId=='player1' and 'player2' or 'player1']), 197,18)
+    -- love.graphics.setFont(numbersFont)
+    -- if gameTime > 0 or (love.timer.getTime()%1>1/2) then
+    --     love.graphics.print(string.format("%.2d:%.2d", gameTime/60%60, gameTime%60), 56,18)
+    -- end
+    -- love.graphics.print(string.format("%03d",scores[self.playerId]), 134,18)
+    -- love.graphics.print(string.format("%03d",scores[self.playerId=='player1' and 'player2' or 'player1']), 197,18)
 
     -- Draw on canvas
     local x = self.playerId=='player1' and (WIDTH-1)*TILE_SIZE or TILE_SIZE
     local y = self.playerId=='player1' and HEIGHT*TILE_SIZE or 0
-    local rotation = self.playerId=='player1' and (math.pi/2)*3 or math.pi/2 
+    local rotation = self.playerId=='player1' and (math.pi/2)*3 or math.pi/2
     love.graphics.setCanvas(canvas)
     love.graphics.draw(playerPanelCanvas, x, y, rotation)
 end
