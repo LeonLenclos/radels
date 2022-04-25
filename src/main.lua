@@ -52,6 +52,12 @@ function love.update(dt)
   -- Input
   input.update(dt)
 
+  -- Mute
+  if input.mute then
+    love.audio.setVolume(0)
+  else
+    love.audio.setVolume(MASTER_VOLUME)
+  end
 
   -- Logic
   panels.update(dt)

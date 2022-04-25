@@ -11,6 +11,7 @@ local panels = require 'panels'
 local output = require 'output'
 local input = require 'input'
 local audio = require 'audio'
+local utils = require 'utils'
 
 --------------------------------------------------
 -- Scenes
@@ -105,7 +106,7 @@ end
 scenes.arena = {}
 
 function scenes.arena.load()
-  world = World(ARENA_MAP)
+  world = World(utils.fakeChoice(ARENA_MAPS))
   player1 = world:getById('player1')
   player2 = world:getById('player2')
   panels.setPlayers(player1, player2)

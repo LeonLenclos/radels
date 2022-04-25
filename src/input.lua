@@ -31,7 +31,7 @@ function input.update(dt)
    -- If two joysticks are plugged store input values from joystick, else take keyboard inputs
    -- Note that shoot is true only once per press (on press)
 
-   if #joysticks >= 2  then	  
+   if #joysticks >= 2  then
 	  -- Push buttons
 	  input.p1_shoot = not input.p1_shoot_pressed and joysticks[1]:isGamepadDown('a')
 	  input.p1_shoot_pressed = joysticks[1]:isGamepadDown('a')
@@ -52,8 +52,8 @@ function input.update(dt)
 	  input.p2_left =  joysticks[2]:getGamepadAxis("leftx") < JOY_ORIGIN-JOY_SENSIBILITY
 	  input.p2_right = joysticks[2]:getGamepadAxis("leftx") > JOY_ORIGIN+JOY_SENSIBILITY
 
-	  -- Insert Coin
-	  input.insert_coin = joysticks[2]:isGamepadDown('x')
+	  -- Mute
+	  input.mute = joysticks[2]:isGamepadDown('x')
    else
 	  -- Keys
 	  input.p1_shoot = not input.p1_shoot_pressed and love.keyboard.isDown("l")
@@ -66,7 +66,7 @@ function input.update(dt)
 
 	  -- Arrows
 	  input.p1_up = love.keyboard.isDown("up")
-	  input.p1_down = love.keyboard.isDown("down") 
+	  input.p1_down = love.keyboard.isDown("down")
 	  input.p1_left = love.keyboard.isDown("left")
 	  input.p1_right = love.keyboard.isDown("right")
 
@@ -75,14 +75,14 @@ function input.update(dt)
 	  input.p2_left = love.keyboard.isDown("q")
 	  input.p2_right = love.keyboard.isDown("d")
 
-	  -- Coin key
-	  input.insert_coin = love.keyboard.isDown("space")
+	  -- Mute key
+	  input.mute = love.keyboard.isDown("space")
    end
 
    if GPIO then
-	  input.insert_coin = GPIO.input(3) ~= GPIO.LOW		 
+	  input.mute = GPIO.input(3) ~= GPIO.LOW
    end
-   
+
 end
 
 -- Call player function for each input
@@ -161,9 +161,9 @@ function input.debugString()
 	  .. (input.p2_shoot and 'S' or '')
 	  .. (input.p2_action and 'A' or '')
 	  .. ' | other = '
-	  .. (input.insert_coin and 'C' or '  ')
+	  .. (input.mute and 'M' or '  ')
 	  .. ' | ' .. joydebug
-   	  .. ' | GPIO = ' .. tostring(GPIO)   
+   	  .. ' | GPIO = ' .. tostring(GPIO)
 end
 
 return input

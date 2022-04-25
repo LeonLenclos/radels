@@ -71,13 +71,13 @@ function Entity:new(x, y, properties, spriteStates)
 			return offset
 		 end
 	  end
-	  -- create rowRule dunction for rowAnimated sprites
+	  -- create rowRule function for rowAnimated sprites
 	  if self.spriteStates[k].rowAnimated then
 		 self.spriteStates[k].rowRule = function(x, y, world)
 			return math.floor(self.spriteStates[k].animCurrentTime/self.spriteStates[k].animDuration*self.spriteStates[k].animLength)
 		 end
 	  end
-	  -- create colRule dunction for colAnimated sprites
+	  -- create colRule function for colAnimated sprites
 	  if self.spriteStates[k].colAnimated then
 		 self.spriteStates[k].colRule = function(x, y, world)
 			return math.floor(self.spriteStates[k].animCurrentTime/self.spriteStates[k].animDuration*self.spriteStates[k].animLength)
@@ -90,7 +90,7 @@ end
 function Entity:getProperty(key)
    if self.properties then
 	  return self.properties[key]
-   end  
+   end
 end
 
 -- Set the value for a given property
@@ -167,7 +167,7 @@ end
 function Entity:draw()
    local spriteState = self:getSpriteState()
    if spriteState then
-	  -- Choose the sprite frame/variation 
+	  -- Choose the sprite frame/variation
 	  local tileX = spriteState.colOrigin*TILE_SIZE
 	  local tileY = spriteState.rowOrigin*TILE_SIZE
 	  if spriteState.rowRule then
