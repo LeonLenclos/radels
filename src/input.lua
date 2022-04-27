@@ -4,7 +4,7 @@
 local input = {}
 local joysticks = love.joystick.getJoysticks()
 local GPIO = nil
-
+local utils = require 'utils'
 -- init GPIO
 function input.initGPIO()
    GPIO = require "GPIO"
@@ -82,6 +82,120 @@ function input.update(dt)
    if GPIO then
 	  input.mute = GPIO.input(3) ~= GPIO.LOW
    end
+
+   input.konamiCheck()
+end
+
+input.konamiMemoryP1 = {}
+input.konamiMemoryP2 = {}
+input.konamiCallback = nil
+function input.konamiCheck()
+  local konami = {' ',
+    'up', ' ', 'up', ' ', 'down', ' ', 'down', ' ',
+    'left', ' ', 'right', ' ', 'left', ' ', 'right', ' ',
+    'b', ' ', 'a', ' '
+  }
+  -- key storage for p1
+  if input.p1_up then
+    if input.konamiMemoryP1[#input.konamiMemoryP1] ~= 'up' then
+      table.insert(input.konamiMemoryP1, 'up')
+    end
+  elseif input.p1_down  then
+    if input.konamiMemoryP1[#input.konamiMemoryP1] ~= 'down' then
+      table.insert(input.konamiMemoryP1, 'down')
+    end
+  elseif input.p1_left  then
+    if input.konamiMemoryP1[#input.konamiMemoryP1] ~= 'left' then
+      table.insert(input.konamiMemoryP1, 'left')
+    end
+  elseif input.p1_right  then
+    if input.konamiMemoryP1[#input.konamiMemoryP1] ~= 'right' then
+      table.insert(input.konamiMemoryP1, 'right')
+    end
+  elseif input.p1_shoot_pressed  then
+    if input.konamiMemoryP1[#input.konamiMemoryP1] ~= 'a' then
+      table.insert(input.konamiMemoryP1, 'a')
+    end
+  elseif input.p1_action  then
+    if input.konamiMemoryP1[#input.konamiMemoryP1] ~= 'b' then
+      table.insert(input.konamiMemoryP1, 'b')
+    end
+  elseif input.konamiMemoryP1[#input.konamiMemoryP1] ~= ' ' then
+    table.insert(input.konamiMemoryP1, ' ')
+  end
+  -- key storage for p2
+  if input.p2_up then
+    if input.konamiMemoryP2[#input.konamiMemoryP2] ~= 'up' then
+      table.insert(input.konamiMemoryP2, 'up')
+    end
+  elseif input.p2_down  then
+    if input.konamiMemoryP2[#input.konamiMemoryP2] ~= 'down' then
+      table.insert(input.konamiMemoryP2, 'down')
+    end
+  elseif input.p2_left  then
+    if input.konamiMemoryP2[#input.konamiMemoryP2] ~= 'left' then
+      table.insert(input.konamiMemoryP2, 'left')
+    end
+  elseif input.p2_right  then
+    if input.konamiMemoryP2[#input.konamiMemoryP2] ~= 'right' then
+      table.insert(input.konamiMemoryP2, 'right')
+    end
+  elseif input.p2_shoot_pressed  then
+    if input.konamiMemoryP2[#input.konamiMemoryP2] ~= 'a' then
+      table.insert(input.konamiMemoryP2, 'a')
+    end
+  elseif input.p2_action  then
+    if input.konamiMemoryP2[#input.konamiMemoryP2] ~= 'b' then
+      table.insert(input.konamiMemoryP2, 'b')
+    end
+  elseif input.konamiMemoryP2[#input.konamiMemoryP2] ~= ' ' then
+    table.insert(input.konamiMemoryP2, ' ')
+  end
+
+  -- memory check for p1
+  for i,k in ipairs(input.konamiMemoryP1) do
+    if k ~= konami[i] then
+      table.remove(input.konamiMemoryP1, 1)
+      break
+    end
+  end
+
+  -- memory check for p2
+  for i,k in ipairs(input.konamiMemoryP2) do
+    if k ~= konami[i] then
+      table.remove(input.konamiMemoryP2, 1)
+      break
+    end
+  end
+
+  if #input.konamiMemoryP2 > 0 then
+    print(utils.tableRepr(input.konamiMemoryP2))
+  end
+
+  if #konami == #input.konamiMemoryP1 or #konami == #input.konamiMemoryP2 then
+    input.konamiCallback()
+    input.konamiMemoryP1 = {}
+    input.konamiMemoryP2 = {}
+  end
+end
+
+-- Call player function for each input
+function input.doArcadeInputs(player1, player2, cabinet)
+
+   -- Player 1
+   -- The controls are reverse if the players looks to the back
+
+   -- Input for player animation
+   player1.moving = 0
+   if input.p1_right then player1.moving = -1 end
+   if input.p1_left then player1.moving = 1 end
+
+   player2.moving = 0
+   if input.p2_right then player2.moving = -1 end
+   if input.p2_left then player2.moving = 1 end
+
+   player1.shooting = input.p1_shoot
+   player2.shooting = input.p2_shoot
 
 end
 

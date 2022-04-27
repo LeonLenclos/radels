@@ -74,6 +74,18 @@ JOY_ORIGIN = 0
 
 -- Map
 
+ARCADE_MAP = [[
+
+
+     :::::
+     :::::
+     :b%a:
+     :::::
+     :::::
+
+
+]]
+
 ARENA_MAPS = {
 [[
 

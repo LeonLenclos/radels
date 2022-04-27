@@ -7,7 +7,7 @@ local Wall = require 'entities.Wall'
 local Bomb = require 'entities.Bomb'
 local Carpet = require 'entities.Carpet'
 local scores = require 'scores'
-local audio = require 'audio' 
+local audio = require 'audio'
 local effects = require 'effects'
 
 local tileset = love.graphics.newImage('tileset.png')
@@ -110,7 +110,7 @@ function Player:new(x, y, id)
 						  animLength=1,
 						  next='base'
 					   },
-					   moveRight={
+             moveRight={
 						  height=3*TILE_SIZE,
 						  rowOrigin = spriteRow.big,
 						  colOrigin = 0,--id=='player1' and 1 or 0,
@@ -168,9 +168,9 @@ function Player:update(dt)
 	  end
 	  effects.target.show(self.id, self.SpecialActionIndex, self.x, self.y, targetX, targetY)
    end
-   
 
-   
+
+
    if self.actionCharging then
 	  -- Action Press
 	  self:setSpriteState('actionCharging')
@@ -195,16 +195,23 @@ function Player:update(dt)
 		 self.meditationSound:stop()
 	  end
 	  if self.specialActionCharged then
-		 local actionMethod = self.specialActions[self.SpecialActionIndex] 
+		 local actionMethod = self.specialActions[self.SpecialActionIndex]
 		 if actionMethod(self) then
 			self.SpecialActionIndex = nil
 			self.specialActionCharged = false
-		 end	
+		 end
 	  elseif self.SpecialActionIndex then
 		 self.specialActionCharged = true
 	  end
 	  self.actionCharge = 0
    end
+
+   -- Arrows
+   if self.isOut then
+     effects.arrow.show(self.id, self.x, self.y)
+   end
+
+
 end
 
 function Player:moveTo(x, y)
@@ -213,6 +220,7 @@ function Player:moveTo(x, y)
 	  self.x = x
 	  self.y = y
 	  self.moveRecovery = 0
+    self.isOut = x >= WIDTH-1 or x <= 0 or y >= HEIGHT or y < 0
 	  return true
    end
    return false

@@ -32,7 +32,7 @@ function Carpet:new(x, y)
 
             },
             birth={
-                rowOrigin=1,
+                rowOrigin=0,
                 colOrigin=17,
                 colRule=function()
                     if not world:isTypeAt('carpet', x, y-1) then -- Top neighbour

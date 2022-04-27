@@ -38,6 +38,11 @@ function love.load()
   gameTime = 0
 
   -- Game elements
+  input.konamiCallback = function()
+    scenes.load(scenes.arcade)
+    scores.lastWinner = 'both'
+    isReady = {}
+  end
   panels.load()
   scenes.load(scenes.pause)
 

@@ -64,6 +64,7 @@ function scenes.pause.load()
   }
   audio.stopMusic()
   audio.playMusic('pause')
+  effects.title.start()
 end
 
 function scenes.pause.update(dt)
@@ -101,6 +102,55 @@ end
 
 
 --------------------------------------------------
+-- Arcade scene
+
+scenes.arcade = {}
+
+function scenes.arcade.load()
+  world = World(ARCADE_MAP)
+  player1 = world:getById('player1')
+  player2 = world:getById('player2')
+  cabinet = world:getById('cabinet')
+
+  panels.setPlayers()
+  for id, panel in panels.iter() do
+    panel:setMessage('BATTEZ-VOUS DANS LES JEUX PAS IRL <3')
+  end
+  audio.playMusic('arena')
+end
+
+function scenes.arcade.update(dt)
+  -- Input
+  input.doArcadeInputs(player1, player2)
+
+  -- Logic
+  world:update(dt)
+  output.update(dt)
+  effects.arcade.update(dt)
+
+  -- Output
+  output.doPlayerOutput(player1, player2)
+
+
+  -- End
+  if cabinet.winner then
+    scores.lastWinner = cabinet.winner
+    scenes.load(scenes.pause)
+  end
+end
+
+
+function scenes.arcade.draw()
+  love.graphics.push()
+  love.graphics.translate(15, 0)
+  world:draw()
+  love.graphics.pop()
+  effects.arcade.draw(cabinet.x*TILE_SIZE+5+15, cabinet.y*TILE_SIZE+9)
+end
+
+
+
+--------------------------------------------------
 -- Arena scene
 
 scenes.arena = {}
@@ -123,6 +173,7 @@ function scenes.arena.update(dt)
 
   -- Logic
   effects.target.update(dt)
+  effects.arrow.update(dt)
   world:update(dt)
   output.update(dt)
   effects.cameraShake.update(dt)
@@ -154,6 +205,7 @@ function scenes.arena.draw()
   love.graphics.translate(unpack(effects.cameraShake.getOffset()))
   world:draw()
   effects.target.draw()
+  effects.arrow.draw()
   love.graphics.pop()
 end
 

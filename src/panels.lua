@@ -167,7 +167,7 @@ function PlayerPanel:draw()
     love.graphics.setFont(dogicaFont)
     local textWidth  = dogicaFont:getWidth(self.message)
     love.graphics.setColor(BLACK)
-    love.graphics.print(self.message, 151-textWidth/2, 11)
+    love.graphics.print(self.message, 148-textWidth/2, 11)
     love.graphics.setColor(1,1,1)
   end
 

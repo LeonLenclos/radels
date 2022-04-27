@@ -10,6 +10,8 @@ local Player = require 'entities.Player'
 local Platform = require 'entities.Platform'
 local Wall = require 'entities.Wall'
 local Carpet = require 'entities.Carpet'
+local ArcadePlayer = require 'entities.ArcadePlayer'
+local ArcadeCabinet = require 'entities.ArcadeCabinet'
 local ReadyArea = require 'entities.ReadyArea'
 
 -- Constructor for the World
@@ -21,7 +23,7 @@ end
 -- Iter threw each object of the world given a filter
 function World:iter(filterIter)
    local i = 0
-   local objects = filterIter and utils.filter(self.objects, filterIter) or self.objects 
+   local objects = filterIter and utils.filter(self.objects, filterIter) or self.objects
    local count = #objects
    return function ()
 	  i = i + 1
@@ -77,14 +79,14 @@ function World:update(dt)
 
    -- Update all entites except players if one is dead.
    for obj in self:iter() do
-	  if not oneIsDead or not (self.id == 'player1' or self.id == 'player2') then 
+	  if not oneIsDead or not (self.id == 'player1' or self.id == 'player2') then
 		 obj:update(dt)
 		 if obj:getProperty('isSolid') and not world:isGroundAt(obj.x, obj.y) then
 			obj:drown()
 		 end
 	  end
    end
-   
+
    -- remove destroyed objects
    self.objects = utils.filter(self.objects, function(o) return not o:getProperty('toDelete') end)
 end
@@ -139,13 +141,22 @@ function World:loadMap(map)
 		 elseif c == ':' then
 			self:add(Platform(x, y))
 			self:add(Carpet(x, y))
-		 elseif c == '1' then
-			self:add(Player(x, y, 'player1'))
-			self:add(Platform(x, y))
-		 elseif c == '2' then
-			self:add(Player(x, y, 'player2'))
-			self:add(Platform(x, y))
-		 end
+    elseif c == '1' then
+     self:add(Player(x, y, 'player1'))
+     self:add(Platform(x, y))
+    elseif c == '2' then
+     self:add(Player(x, y, 'player2'))
+     self:add(Platform(x, y))
+   elseif c == 'a' then
+    self:add(ArcadePlayer(x, y, 'player1'))
+    self:add(Carpet(x, y))
+  elseif c == 'b' then
+   self:add(ArcadePlayer(x, y, 'player2'))
+   self:add(Carpet(x, y))
+ elseif c == '%' then
+  self:add(ArcadeCabinet(x, y, 'cabinet'))
+  self:add(Carpet(x, y))
+ end
 		 x = x + 1
 	  end
    end
