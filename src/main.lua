@@ -19,6 +19,7 @@ function love.load()
   love.window.setMode(DISPLAY_WIDTH*DISPLAY_PIXEL_RATIO, DISPLAY_HEIGHT*DISPLAY_PIXEL_RATIO)
   love.graphics.setDefaultFilter('nearest')
   love.graphics.setBackgroundColor(BLACK)
+  love.mouse.setVisible(false)
   canvas = love.graphics.newCanvas(DISPLAY_WIDTH, DISPLAY_HEIGHT)
   tileset = love.graphics.newImage('tileset.png')
 

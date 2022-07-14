@@ -1,0 +1,62 @@
+body, html {
+  margin: 0;
+  padding: 0;
+
+}
+
+body {
+  background: #f6e8d6;
+  color: #2b205a;
+  font-family: monospace;
+  font-size: 1.3em;
+
+}
+
+h1, h2, h3, h4 {
+  font-size: inherit;
+}
+
+h2, header {
+
+  background: #2b205a;
+  color: #f6e8d6;
+}
+
+header {
+  margin: 0;
+  padding: 20px;
+}
+
+
+header img {
+  display: block;
+  width:400px;
+  margin: auto;
+}
+
+h2 {
+  margin:20px 0;
+  padding: 10px;
+  text-align: center;
+}
+
+main{
+  background: #f6e8d6;
+  max-width:700px;
+  margin:auto;
+}
+
+p {
+  margin:10px;
+}
+
+main img {
+  display: block;
+  max-width: 100%;
+  margin:0;
+}
+.footnote {
+  text-decoration: none;
+  vertical-align: super;
+  font-size: smaller;
+}

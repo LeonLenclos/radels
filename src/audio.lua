@@ -13,7 +13,7 @@ function audio.load()
 	  sounds = 'audio/sounds/%s.wav',
 	  musics = 'audio/musics/%s.wav'
    }
-   
+
    -- Load sounds
    audio.sounds = {}
    audio.loadSound('carpet')
@@ -30,14 +30,12 @@ function audio.load()
    audio.loadSound('meditation3')
    audio.loadSound('drown')
    audio.loadSound('death')
-   audio.loadSound('step', 11) 
+   audio.loadSound('step', 11)
 
    -- Load musics and set volumes
    audio.musics = {}
    audio.loadMusic('arena')
-   audio.musics['arena']:setVolume(0.7)
    audio.loadMusic('pause')
-   audio.musics['pause']:setVolume(0.6)
 end
 
 -- Load a sound giving a name and the amount of variants (default is no variant)
@@ -77,12 +75,13 @@ function audio.playMusic(name)
    audio.stopMusic()
    -- Play the current music in loop
    audio.musics[name]:setLooping(true)
+   audio.musics[name]:setVolume(MUSIC_VOLUME[name])
    audio.musics[name]:play()
 end
 
 -- Play a sound giving a name and an x position
 function audio.playSound(name, x)
-   -- Get the source 
+   -- Get the source
    local source
    if audio.sounds[name].source then
 	  source = audio.sounds[name].source

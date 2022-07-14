@@ -8,7 +8,11 @@ DEBUG = false
 
 -- Sounds
 
-MASTER_VOLUME = 0.5 -- /1
+MASTER_VOLUME = 0.95  -- /1
+MUSIC_VOLUME = {
+  arena = 0.7,
+  pause = 0.6
+}
 
 -- Colors
 
@@ -24,7 +28,7 @@ HEIGHT = 9 -- tiles
 
 DISPLAY_WIDTH = TILE_SIZE*WIDTH -- pixels
 DISPLAY_HEIGHT = TILE_SIZE*HEIGHT -- pixels
-DISPLAY_PIXEL_RATIO = 3 -- 4
+DISPLAY_PIXEL_RATIO = 4 -- 4
 
 -- Player
 
@@ -65,6 +69,8 @@ MAX_PAUSE_TIME = 20 --sec
 TARGET_FRAME_DURATION = 1/8 -- sec
 CAMERASHAKE_DURATION = 1/2 -- sec
 CAMERASHAKE_FRAME_DURATION = 1/10 -- sec
+MUSIC_FADEOUT_TIME = 200 -- sec
+MUSIC_FADEOUT_DURATION =src 5 -- sec
 
 -- Inputs
 

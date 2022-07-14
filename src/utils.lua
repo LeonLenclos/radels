@@ -130,7 +130,6 @@ function utils.fakeChoice(t)
     math.randomseed(os.time())
    local r = math.random()
    local i = math.floor(utils.mapvalue(r*r*r, 0, 0.95, 1, #t))
-   print(r, r*r*r, i)
    return t[i]
 end
 

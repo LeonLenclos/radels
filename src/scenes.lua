@@ -1,6 +1,6 @@
---------------------------------------------------------
--- Scenes -- There is two scenes, 'pause' and 'arena' --
---------------------------------------------------------
+-----------------------------------------------------------------------------------
+-- Scenes -- There is two scenes, 'pause' and 'arena'(+ a secret scene 'arcade') --
+-----------------------------------------------------------------------------------
 local scenes = {}
 
 local scores = require 'scores'
@@ -65,6 +65,7 @@ function scenes.pause.load()
   audio.stopMusic()
   audio.playMusic('pause')
   effects.title.start()
+  pauseTimer = 0
 end
 
 function scenes.pause.update(dt)
@@ -93,6 +94,14 @@ function scenes.pause.update(dt)
 
   -- Title
   effects.title.update(dt)
+
+  -- Music Fadeout
+  pauseTimer = pauseTimer + dt
+  if pauseTimer > MUSIC_FADEOUT_TIME then
+    t = (pauseTimer - MUSIC_FADEOUT_TIME)
+    vol = utils.max(0, 1 - t / MUSIC_FADEOUT_DURATION)
+    audio.musics['pause']:setVolume(MUSIC_VOLUME['pause'] * vol)
+  end
 end
 
 function scenes.pause.draw()
@@ -180,7 +189,6 @@ function scenes.arena.update(dt)
 
   -- Output
   output.doPlayerOutput(player1, player2)
-
 
   -- End
   if player1:getProperty('toDelete') and player2:getProperty('toDelete') then

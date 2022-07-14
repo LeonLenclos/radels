@@ -1,20 +1,17 @@
 # Radèls
 
-![radels](title.png)
+![radels](images/title.png)
 
-Radèls est une borne d'arcade cocktail<sup>1</sup> dédiée<sup>2</sup>. Actuellement en cours de construction par Léon et Fabien.
+Radèls est un jeu de combat 1v1 en vue du dessus qui se joue sur une borne d'arcade cocktail dédiée.
 
 Ce dépôt contient le code source du jeu et les informations concernant la construction de la borne.
 
-<sup>1. Sous la forme d'une table avec l'écran à l'horizontale et les deux joueurs face-à-face.</sup><br/>
-<sup>2. Qui ne se joue qu'avec un seul jeu.</sup>
-
-<!--![radels](borne.png)-->
+Plus d'info sur http://leonlenclos.net/radels/
 
 
+## Code
 
-
-
+Le jeu est fait avec le fantastique framework [löve](https://love2d.org/), le code est un peu bordelique est faiblement documenté.
 
 ## Installation
 
@@ -22,13 +19,13 @@ L'idée est d'installer retropie sur le raspberry et de faire demarrer le jeu di
 
 ### Configurer le raspberrypi
 
-#### Installer et configurer RetroPie : 
+#### Installer et configurer RetroPie :
 
 (plus d'infos sur https://retropie.org.uk/docs/First-Installation/#installation)
 
 1. Crééer une micro sd RetroPie pour rpi4
 2. Démarrer le raspberry avec RetroPie
-3. Configuerer les controles (clavier par exemple) 
+3. Configuerer les controles (clavier par exemple)
 4. Configuerer la langue du clavier si necessaire (menu RetroPie > raspi-config)
 5. Configuerer le wifi (menu RetroPie > raspi-config)
 6. Installer love (menu RetroPie > RetroPie Setup > Manage Packages > opt)
@@ -43,15 +40,15 @@ L'idée est d'installer retropie sur le raspberry et de faire demarrer le jeu di
 
 ### Autre réglages
 
-Il y a une bordure noire autour du jeu, il faut desactiver l'overscan (RetroPie > raspi-config) 
+Il y a une bordure noire autour du jeu, il faut desactiver l'overscan (RetroPie > raspi-config)
 
 ### Créer un .love à jour à partir de ce dépôt
 
 Récupérer la version la plus récente du jeu
 
-    # Cloner le dépôt
+  # Cloner le dépôt
 	$ git clone https://github.com/LeonLenclos/radels.git
-	
+
 	# Créér le fichier .love
 	$ cd radels/src
 	$ rm ../radels.love
@@ -59,6 +56,16 @@ Récupérer la version la plus récente du jeu
 
 
 ### Mettre le jeu sur la borne
+
+#### Par ssh
+
+1. Se brancher au rpi en ethernet
+2. Allumer le rpi
+3. Copier le jeu sur le rpi `scp radels.love pi@169.254.102.191:/home/pi/RetroPie/roms/love` (mot de passe = raspberry)
+
+#### Par clé usb
+
+**attention cette méthode ne semble plus marcher, préferer transfert par ssh**
 
 D'abord créer une clé RetroPie :
 
@@ -72,12 +79,6 @@ Ensuite mettre [`radels.love`](radels.love) sur la clé, dans `/retropie/love/`.
 3. Rebooter
 
 
-## Règles
-
-* Se déplacer : Joystick
-* Tirer : A
-* Utiliser / Méditer : B
-
 ## Notes diverses
 
 ### Joysticks
@@ -90,14 +91,13 @@ Ensuite mettre [`radels.love`](radels.love) sur la clé, dans `/retropie/love/`.
 librairie pour les gpio : https://github.com/Tieske/rpi-gpio/blob/master/lua/README.md
 
 ### Sorties du jeu
-    
-La sortie principale est un écran lcd où s'affiche le jeu. La borne possède aussi des leds pour transmettre des informations importantes au joueur et des enceintes pour la musique et les bruitages.
+
+La sortie principale est un écran lcd où s'affiche le jeu. La borne possède aussi enceintes pour la musique et les bruitages.
 
 ### Boutons
 
 * Diametre trou grand bouton : 30mm
 * Diametre trou petit bouton : 23.5mm
-
 
 ### L'écran
 
@@ -107,31 +107,7 @@ La sortie principale est un écran lcd où s'affiche le jeu. La borne possède a
 * Taille de la dale : 13.3 inch (290mm x 170mm)
 * Dimensions exterieurs : 328mm x 206mm x 12.5mm
 
-
-
-### Leds
-
-
-* output.p1_life_1
-* output.p1_life_2
-* output.p1_life_3
-* output.p1_life_4
-* output.p1_life_5
-* output.p2_life_1
-* output.p2_life_2
-* output.p2_life_3
-* output.p2_life_4
-* output.p2_life_5
-* output.p2_action_1
-* output.p2_action_2
-* output.p2_action_3
-* output.p1_action_1
-* output.p1_action_2
-* output.p1_action_3
-
-
-## Entrées du jeu
-
+### Entrées du jeu
 
 4 boutons-poussoirs :
 
@@ -150,8 +126,3 @@ La sortie principale est un écran lcd où s'affiche le jeu. La borne possède a
 * input.p2_down
 * input.p2_left
 * input.p2_right
-
-1 monnayeur :
-
-* input.insert_coin
-

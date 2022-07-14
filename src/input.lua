@@ -168,9 +168,6 @@ function input.konamiCheck()
     end
   end
 
-  if #input.konamiMemoryP2 > 0 then
-    print(utils.tableRepr(input.konamiMemoryP2))
-  end
 
   if #konami == #input.konamiMemoryP1 or #konami == #input.konamiMemoryP2 then
     input.konamiCallback()
